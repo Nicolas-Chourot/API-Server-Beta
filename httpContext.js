@@ -1,11 +1,12 @@
 const queryString = require("query-string");
 const Response = require('./response');
-
+const utilities = require('./utilities.js');
 module.exports =
     class HttpContext {
         constructor(req, res) {
             this.req = req;
             this.res = res;
+            this.path = utilities.decomposePath(req.url);
             this.secure = req.headers['x-forwarded-proto'] != undefined;
             this.host = (this.secure ? "https://" : "http://") + req.headers["host"];
             this.hostIp = req.headers['x-forwarded-for'] != undefined ? req.headers['x-forwarded-for'] : "127.0.0.1";

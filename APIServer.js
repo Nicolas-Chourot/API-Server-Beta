@@ -9,7 +9,6 @@ module.exports =
             this.httpContext = null;
             this.httpServer = require('http').createServer(async (req, res) => { this.handleHttpResquest(req, res) });
         }
-
         initMiddlewaresPipeline() {
             const staticResourceServer = require('./staticRessourcesServer');
             const MiddlewaresPipeline = require('./middlewaresPipeline');
@@ -19,6 +18,8 @@ module.exports =
             this.middlewaresPipeline.add(staticResourceServer.sendRequestedRessource);
 
             // API middlewares
+            const router = require('./router');
+            this.middlewaresPipeline.add(router.API_EndPoint);
         }
         showRequestInfo() {
             this.markRequestProcessStartTime();
@@ -64,7 +65,6 @@ module.exports =
             console.log(clc.green("* Release date: august 30 2022   *"));
             console.log(clc.green("**********************************"));
             console.log(clc.bgGreen(clc.white(`HTTP Server running on port ${this.port}...`)));
-
             this.showMemoryUsage();
         }
         start() {

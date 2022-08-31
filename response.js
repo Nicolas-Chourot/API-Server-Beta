@@ -26,7 +26,15 @@ module.exports =
             this.res.writeHead(201, { 'content-type': 'application/json' });
             this.end(JSON.stringify(jsonObj));
         }
-
+        JSON(jsonObj) {
+            this.res.writeHead(200, { 'content-type': 'application/json' });
+            if (jsonObj != null) {
+                let content = JSON.stringify(jsonObj);
+                this.end(content);
+            } else {
+                this.end();
+            }
+        }
         HTML(content) {
             this.content('text/html', content);
         }
