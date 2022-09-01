@@ -1,3 +1,13 @@
+/////////////////////////////////////////////////////////////////////
+// This module define the HttpContext class
+// When the server receive a http request an instance of the 
+// HttpContext is created and will hold all information of the
+// request also the payload if the verb is GET or PUT
+/////////////////////////////////////////////////////////////////////
+// Author : Nicolas Chourot
+// Lionel-Groulx College
+/////////////////////////////////////////////////////////////////////
+
 const queryString = require("query-string");
 const Response = require('./response');
 const utilities = require('./utilities.js');

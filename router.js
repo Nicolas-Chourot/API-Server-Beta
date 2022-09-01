@@ -1,8 +1,13 @@
-var clc = require("cli-color");
+/////////////////////////////////////////////////////////////////////
+// This module define routers middlewares
+/////////////////////////////////////////////////////////////////////
+// Author : Nicolas Chourot
+// Lionel-Groulx College
+/////////////////////////////////////////////////////////////////////
 exports.API_EndPoint = function (HttpContext) {
     return new Promise(async (resolve) => {
         if (!HttpContext.path.isAPI) {
-            resolve(false); 
+            resolve(false);
         } else {
             let controllerName = HttpContext.path.controllerName;
             let id = HttpContext.path.id;
@@ -46,8 +51,8 @@ exports.API_EndPoint = function (HttpContext) {
                             break;
                     }
                 } catch (error) {
-                    console.log((clc.red("API_EndPoint Error message: \n", error.message)));
-                    console.log((clc.red("Stack: \n", error.stack)));
+                    log(FgRed, "API_EndPoint Error message: \n", error.message);
+                    log(FgRed, "Stack: \n", error.stack);
                     HttpContext.response.notFound();
                     resolve(true);
                 }

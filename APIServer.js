@@ -1,6 +1,13 @@
-var clc = require("cli-color");
-const HttpContext = require('./httpContext');
+/////////////////////////////////////////////////////////////////////
+// This module define the APIServer class. It hold all the
+// functionalities to serve a RestFull API web service repecting
+// the MVC application architecture.
+/////////////////////////////////////////////////////////////////////
+// Author : Nicolas Chourot
+// Lionel-Groulx College
+/////////////////////////////////////////////////////////////////////
 
+const HttpContext = require('./httpContext');
 module.exports =
     class APIServer {
         constructor(port = process.env.PORT || 5000) {
@@ -22,49 +29,47 @@ module.exports =
             this.middlewaresPipeline.add(router.API_EndPoint);
         }
         showRequestInfo() {
-            this.markRequestProcessStartTime();
             let time = require('date-and-time').format(new Date(), 'YYYY MMMM DD - HH:mm:ss');
-            console.log(clc.green('<-------------------------', time, '-------------------------'));
-            console.log(clc.bold(clc.green(`Request --> [${this.httpContext.req.method}::${this.httpContext.req.url}]`)));
-            console.log("User agent ", this.httpContext.req.headers["user-agent"]);
-            console.log("Host ", this.httpContext.hostIp.substring(0, 15), "::", this.httpContext.host);
+            log(FgGreen, '<-------------------------', time, '-------------------------');
+            log(FgGreen, Bright, `Request --> [${this.httpContext.req.method}::${this.httpContext.req.url}]`);
+            log("User agent ", this.httpContext.req.headers["user-agent"]);
+            log("Host ", this.httpContext.hostIp.substring(0, 15), "::", this.httpContext.host);
             if (this.httpContext.payload)
-                console.log("Request payload ", JSON.stringify(this.httpContext.payload).substring(0, 127) + "...");
-        }
-        showResponseInfo() {
-            this.showRequestProcessTime();
-            this.showMemoryUsage();
+                log("Request payload ", JSON.stringify(this.httpContext.payload).substring(0, 127) + "...");
         }
         markRequestProcessStartTime() {
             this.requestProcessStartTime = process.hrtime();
         }
         showRequestProcessTime() {
             let requestProcessEndTime = process.hrtime(this.requestProcessStartTime);
-            console.log(clc.cyanBright("Response time: ", Math.round((requestProcessEndTime[0] * 1000 + requestProcessEndTime[1] / 1000000) / 1000 * 10000) / 10000, "seconds"));
+            log(FgCyan, "Response time: ", Math.round((requestProcessEndTime[0] * 1000 + requestProcessEndTime[1] / 1000000) / 1000 * 10000) / 10000, "seconds");
         }
         showMemoryUsage() {
             // for more info https://www.valentinog.com/blog/node-usage/
             const used = process.memoryUsage();
-            console.log(clc.magenta("Memory usage: ", "RSet size:", Math.round(used.rss / 1024 / 1024 * 100) / 100, "Mb |",
+            log(FgMagenta, "Memory usage: ", "RSet size:", Math.round(used.rss / 1024 / 1024 * 100) / 100, "Mb |",
                 "Heap size:", Math.round(used.heapTotal / 1024 / 1024 * 100) / 100, "Mb |",
-                "Used size:", Math.round(used.heapUsed / 1024 / 1024 * 100) / 100, "Mb"));
+                "Used size:", Math.round(used.heapUsed / 1024 / 1024 * 100) / 100, "Mb");
         }
         async handleHttpResquest(req, res) {
+            this.markRequestProcessStartTime();
             this.httpContext = await HttpContext.create(req, res);
+            console.log(this.httpContext)
             this.showRequestInfo();
             if (!(await this.middlewaresPipeline.handleHttpRequest(this.httpContext)))
                 this.httpContext.response.notFound();
-            this.showResponseInfo();
+            this.showRequestProcessTime();
+            this.showMemoryUsage();
         }
         startupMessage() {
-            console.log(clc.green("**********************************"));
-            console.log(clc.green("* API SERVER - version beta      *"));
-            console.log(clc.green("**********************************"));
-            console.log(clc.green("* Author: Nicolas Chourot        *"));
-            console.log(clc.green("* Lionel-Groulx College          *"));
-            console.log(clc.green("* Release date: august 30 2022   *"));
-            console.log(clc.green("**********************************"));
-            console.log(clc.bgGreen(clc.white(`HTTP Server running on port ${this.port}...`)));
+            log(FgGreen, "**********************************");
+            log(FgGreen, "* API SERVER - version beta      *");
+            log(FgGreen, "**********************************");
+            log(FgGreen, "* Author: Nicolas Chourot        *");
+            log(FgGreen, "* Lionel-Groulx College          *");
+            log(FgGreen, "* Release date: august 30 2022   *");
+            log(FgGreen, "**********************************");
+            log(FgWhite, BgGreen, `HTTP Server running on port ${this.port}...`);
             this.showMemoryUsage();
         }
         start() {

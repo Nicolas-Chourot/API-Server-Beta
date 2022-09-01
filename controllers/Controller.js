@@ -1,9 +1,12 @@
 /////////////////////////////////////////////////////////////////////
-// Important note about controllers:
-// You must respect pluralize convention: 
-// For ressource name RessourName you have to name the controller
-// RessourceNamesController that must inherit from Controller class
-// in order to have proper routing from request to controller action
+// This module define the base Controller class of all controllers.
+/////////////////////////////////////////////////////////////////////
+// Important note about derived controllers class:
+// They must respect pluralize convention:
+// RessourceNamesController in order to have proper routing
+/////////////////////////////////////////////////////////////////////
+// Author : Nicolas Chourot
+// Lionel-Groulx College
 /////////////////////////////////////////////////////////////////////
 module.exports =
     class Controller {
