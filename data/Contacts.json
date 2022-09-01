@@ -1,0 +1,26 @@
+[
+    {
+        "Id": 1,
+        "Name": "Kyle Ross",
+        "Phone": "(450) 430-3120",
+        "Email": "Kyle.Ross@clg.qc.ca"
+    },
+    {
+        "Id": 2,
+        "Name": "Nicolas Chourot",
+        "Phone": "(450) 430-3120",
+        "Email": "Nicolas.Chourot@clg.qc.ca"
+    },
+    {
+        "Id": 3,
+        "Name": "Saliha Yacoub",
+        "Phone": "(450) 430-3120",
+        "Email": "Saliha.Yacoub@clg.qc.ca"
+    },
+    {
+        "Id": 4,
+        "Name": "Stéphane Chassé",
+        "Phone": "(450) 430-3120",
+        "Email": "Stephane.Chasse@clg.qc.ca"
+    }
+]
