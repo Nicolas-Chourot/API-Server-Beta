@@ -22,5 +22,17 @@
         "Name": "Stéphane Chassé",
         "Phone": "(450) 430-3120",
         "Email": "Stephane.Chasse@clg.qc.ca"
+    },
+    {
+        "Email": "Patrice.Roy@clg.qc.ca",
+        "Id": 5,
+        "Name": "Patrice Roy",
+        "Phone": "(450) 621-6987"
+    },
+    {
+        "Email": "Luc.Ledoux@clg.qc.ca",
+        "Id": 6,
+        "Name": "Luc Ledoux",
+        "Phone": "(123) 123-1231"
     }
 ]

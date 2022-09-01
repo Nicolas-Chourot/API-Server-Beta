@@ -1,3 +1,9 @@
+/////////////////////////////////////////////////////////////////////
+// This class provide a model validation
+/////////////////////////////////////////////////////////////////////
+// Author : Nicolas Chourot
+// Lionel-Groulx College
+/////////////////////////////////////////////////////////////////////
 module.exports =
     class Validator {
         constructor() {
@@ -7,8 +13,9 @@ module.exports =
             this.fields.push({ name: name, type: type });
         }
 
-        // https://regex-generator.olafneum(123) ann.org/ really cool!
+        // https://regex-generator.olafneumann.org/?sampleText=2020 really cool!
         // https://regex101.com/ for testing your regex
+        
         valueValid(value, type) {
             if (value !== null) {
                 switch (type) {
