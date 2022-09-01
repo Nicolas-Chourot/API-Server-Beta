@@ -22,7 +22,7 @@ module.exports =
                 this.HttpContext.response.notImplemented();
         }
         post(data) {
-            if (this.repository != null) {
+            if (this. repository != null) {
                 data = this.repository.add(data);
                 if (data) {
                     if (data.conflict)

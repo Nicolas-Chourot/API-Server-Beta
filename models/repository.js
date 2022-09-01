@@ -40,7 +40,7 @@ class Repository {
             } else {
                 log(Bright, FgRed, `Error while reading ${this.objectsName} repository`);
                 log(Bright, FgRed, '--------------------------------------------------');
-                log(Bright, FgRed, clc.red(error));
+                log(Bright, FgRed, error);
             }
         }
     }
@@ -74,9 +74,9 @@ class Repository {
             }
             return null;
         } catch (error) {
-            console.log(clc.redBright(`Error adding new item in ${this.objectsName} repository`));
-            console.log(clc.redBright('-------------------------------------------------------'));
-            console.log((clc.red(error)));
+            console.log(FgRed, `Error adding new item in ${this.objectsName} repository`);
+            console.log(FgRed, '-------------------------------------------------------');
+            console.log(Bright, FgRed, error);
             return null;
         }
     }

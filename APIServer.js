@@ -16,17 +16,58 @@ module.exports =
             this.httpContext = null;
             this.httpServer = require('http').createServer(async (req, res) => { this.handleHttpResquest(req, res) });
         }
+        static accessControlConfig(res) {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Methods', '*');
+            res.setHeader('Access-Control-Allow-Headers', '*');
+            res.setHeader('Access-Control-Expose-Headers', '*');
+        }
+        static CORS_Prefligth(HttpContext) {
+            APIServer.accessControlConfig(HttpContext.res);
+            return new Promise(async (resolve) => {
+                if (HttpContext.req.method === 'OPTIONS') {
+                    log('CORS preflight verifications');
+                    HttpContext.response.end();
+                    resolve(true);
+                }
+                resolve(false);
+            });
+        }
         initMiddlewaresPipeline() {
             const staticResourceServer = require('./staticRessourcesServer');
             const MiddlewaresPipeline = require('./middlewaresPipeline');
             this.middlewaresPipeline = new MiddlewaresPipeline();
 
             // common middlewares
+            this.middlewaresPipeline.add(APIServer.CORS_Prefligth);
             this.middlewaresPipeline.add(staticResourceServer.sendRequestedRessource);
 
             // API middlewares
             const router = require('./router');
             this.middlewaresPipeline.add(router.API_EndPoint);
+        }
+        async handleHttpResquest(req, res) {
+            this.markRequestProcessStartTime();
+            this.httpContext = await HttpContext.create(req, res);
+            this.showRequestInfo();
+            if (!(await this.middlewaresPipeline.handleHttpRequest(this.httpContext)))
+                this.httpContext.response.notFound();
+            this.showRequestProcessTime();
+            this.showMemoryUsage();
+        }
+        start() {
+            this.httpServer.listen(this.port, () => { this.startupMessage() });
+        }
+        startupMessage() {
+            log(FgGreen, "**********************************");
+            log(FgGreen, "* API SERVER - version beta      *");
+            log(FgGreen, "**********************************");
+            log(FgGreen, "* Author: Nicolas Chourot        *");
+            log(FgGreen, "* Lionel-Groulx College          *");
+            log(FgGreen, "* Release date: august 30 2022   *");
+            log(FgGreen, "**********************************");
+            log(FgWhite, BgGreen, `HTTP Server running on port ${this.port}...`);
+            this.showMemoryUsage();
         }
         showRequestInfo() {
             let time = require('date-and-time').format(new Date(), 'YYYY MMMM DD - HH:mm:ss');
@@ -50,29 +91,5 @@ module.exports =
             log(FgMagenta, "Memory usage: ", "RSet size:", Math.round(used.rss / 1024 / 1024 * 100) / 100, "Mb |",
                 "Heap size:", Math.round(used.heapTotal / 1024 / 1024 * 100) / 100, "Mb |",
                 "Used size:", Math.round(used.heapUsed / 1024 / 1024 * 100) / 100, "Mb");
-        }
-        async handleHttpResquest(req, res) {
-            this.markRequestProcessStartTime();
-            this.httpContext = await HttpContext.create(req, res);
-            console.log(this.httpContext)
-            this.showRequestInfo();
-            if (!(await this.middlewaresPipeline.handleHttpRequest(this.httpContext)))
-                this.httpContext.response.notFound();
-            this.showRequestProcessTime();
-            this.showMemoryUsage();
-        }
-        startupMessage() {
-            log(FgGreen, "**********************************");
-            log(FgGreen, "* API SERVER - version beta      *");
-            log(FgGreen, "**********************************");
-            log(FgGreen, "* Author: Nicolas Chourot        *");
-            log(FgGreen, "* Lionel-Groulx College          *");
-            log(FgGreen, "* Release date: august 30 2022   *");
-            log(FgGreen, "**********************************");
-            log(FgWhite, BgGreen, `HTTP Server running on port ${this.port}...`);
-            this.showMemoryUsage();
-        }
-        start() {
-            this.httpServer.listen(this.port, () => { this.startupMessage() });
         }
     }
