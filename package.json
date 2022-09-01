@@ -10,7 +10,6 @@
   "author": "Nicolas Chourot",
   "license": "ISC",
   "dependencies": {
-    "cli-color": "^2.0.3",
     "date-and-time": "^2.4.1",
     "query-string": "^7.1.1"
   }
