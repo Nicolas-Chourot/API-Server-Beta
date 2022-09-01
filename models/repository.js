@@ -9,18 +9,19 @@
 
 const fs = require('fs');
 const utilities = require('../utilities.js');
-const updateResult = {
-    ok: 0,
-    conflict: 1,
-    notFound: 2,
-    invalid: 3
-}
+
 class Repository {
     constructor(ModelClass) {
         this.objectsList = null;
         this.model = ModelClass;
         this.objectsName = ModelClass.getClassName() + 's';
         this.objectsFile = `./data/${this.objectsName}.json`;
+        this.updateResult = {
+            ok: 0,
+            conflict: 1,
+            notFound: 2,
+            invalid: 3
+        }
     }
     objects() {
         if (this.objectsList == null)
@@ -92,16 +93,16 @@ class Repository {
                     if (object.Id === objectToModify.Id) {
                         this.objectsList[index] = objectToModify;
                         this.write();
-                        return updateResult.ok;
+                        return this.updateResult.ok;
                     }
                     index++;
                 }
-                return updateResult.notFound;
+                return this.updateResult.notFound;
             } else {
-                return updateResult.conflict;
+                return this.updateResult.conflict;
             }
         }
-        return updateResult.invalid;
+        return this.updateResult.invalid;
     }
     remove(id) {
         let index = 0;

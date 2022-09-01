@@ -8,7 +8,7 @@
   </head>
   <body>
     <form id="contactForm">
-      <input type="hidden" name="Id" value="0" />
+      <input type="hidden" id="Id" name="Id" value="0" />
       <input type="text" id="Name" name="Name" placeholder="Name" />
       <input type="text" id="Phone" name="Phone" placeholder="Phone" />
       <input type="text" id="Email" name="Email" placeholder="Email" />
@@ -18,24 +18,30 @@
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script defer>
       function getContactFormData() {
+        let id = $("#Id").val();
         let name = $("#Name").val();
         let phone = $("#Phone").val();
         let email = $("#Name").val();
-        return { Name: name, Phone: phone, Email: email };
+        let contact = { Id: id, Name: name, Phone: phone, Email: email };
+        console.log(contact);
+        return contact;
       }
       $("#contactForm").submit((e) => {
         e.preventDefault();
         createContact(getContactFormData());
       });
+      const API_Service_URL = "http://localhost:5000/api/contacts";
+      //const API_Service_URL = "https://api-server-beta.glitch.me/api/contacts";
       function createContact(
         contact,
         successCallBack = null,
         errorCallBack = null
       ) {
         $.ajax({
-          url: "https://api-server-beta.glitch.me/api/contacts",
-          method: "POST",
-          data: contact,
+          url: API_Service_URL,
+          contentType: "application/json; charset=utf-8",
+          contentType: "application/json",
+          data: JSON.stringify(contact),
           success: () => {
             if (successCallBack) successCallBack();
             console.log("webAPI_addContact - success");
